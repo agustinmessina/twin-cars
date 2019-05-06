@@ -1,10 +1,16 @@
 const blockWidth = 50;
 const blockHeight = 100;
-const difficulty = 1;
-const speed = 1;
+const difficulty = 5;
+const speed = 4;
+const gameDurationInSeconds = 30;
+const initialTime = Date.now();
 
 let blocks = [];
 let car;
+
+let points = 0;
+let expected = 0;
+let timeEnded = false;
 
 function setup() {
   createCanvas(blockWidth * 6, blockWidth * 6);
@@ -14,6 +20,22 @@ function setup() {
 
 function draw() {
   background(0);
+
+  if ((Date.now() - initialTime) >= (gameDurationInSeconds * 1000)) timeEnded = true;
+
+  if (!timeEnded) {
+    playGame();
+  } else {
+    pauseGame();
+  }
+
+  fill(255);
+  text(Math.floor(points), 10, 20);
+  text(Math.floor(expected), 50, 20);
+
+}
+
+function playGame() {
   let lastBlock = blocks[blocks.length - 1];
 
   if (lastBlock.points[3].y === 0) {
@@ -39,6 +61,8 @@ function draw() {
       const partialX2 = blocks[i].points[1].x + xModifier;
 
       car.updateColor(partialX1, partialX2);
+      points += car.calculatePoints(partialX1, partialX2);
+      expected += 1;
     }
 
     blocks[i].show();
@@ -46,7 +70,15 @@ function draw() {
   }
 
   car.show();
+}
 
+function pauseGame() {
+  for (let block of blocks) {
+    block.show();
+  }
+
+  car.static = true;
+  car.show();
 }
 
 function keyPressed() {

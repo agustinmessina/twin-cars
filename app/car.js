@@ -5,14 +5,15 @@ const colors = {
 
 class Car {
 
-    constructor(leftKey, rightKey, w, movimiento) {
+    constructor(leftKey, rightKey, w, movement) {
         this.leftKey = leftKey;
         this.rightKey = rightKey;
         this.x = width / 2;
         this.y = height / 2;
         this.w = w;
-        this.movimiento = movimiento;
+        this.movement = movement;
         this.color = colors.WHITE;
+        this.static = false;
     }
 
     show() {
@@ -21,10 +22,12 @@ class Car {
     }
 
     move(keyPressed) {
+        if (this.static) return;
+
         if (keyPressed === this.leftKey) {
-            this.x -= this.movimiento;
+            this.x -= this.movement;
         } else if (keyPressed === this.rightKey) {
-            this.x += this.movimiento;
+            this.x += this.movement;
         }
     }
 
@@ -38,6 +41,30 @@ class Car {
             this.color = colors.RED;
         }
 
+    }
+
+    calculatePoints(leftLimit, rightLimit) {
+        let difference = 0;
+
+        // console.log('x', this.x);
+        
+        if (this.x < leftLimit) {
+            difference = leftLimit - this.x;
+        } else if ((this.x + this.w) > rightLimit) {
+            difference = this.x + this.w - rightLimit;
+        }
+
+        if (difference > 0) {
+            if (difference <= 15) {
+                return 0;
+            } else if (difference <= 30) {
+                return -0.5;
+            } else {
+                return -1;
+            }
+        }
+
+        return 1;
     }
 
 }
