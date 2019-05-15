@@ -5,15 +5,15 @@ const colors = {
 
 class Car {
 
-    constructor(leftKey, rightKey, w, movement) {
-        this.leftKey = leftKey;
-        this.rightKey = rightKey;
+    constructor(keys, w, movement, background) {
+        this.keys = keys;
         this.x = width / 2;
         this.y = height / 2;
         this.w = w;
         this.movement = movement;
         this.color = colors.WHITE;
         this.static = false;
+        this.background = background
     }
 
     show() {
@@ -24,9 +24,9 @@ class Car {
     move(keyPressed) {
         if (this.static) return;
 
-        if (keyPressed === this.leftKey) {
+        if (keyPressed === this.keys.left && this.x > this.background.leftX) {
             this.x -= this.movement;
-        } else if (keyPressed === this.rightKey) {
+        } else if (keyPressed === this.keys.right && this.x < this.background.rightX) {
             this.x += this.movement;
         }
     }

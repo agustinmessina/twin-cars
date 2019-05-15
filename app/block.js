@@ -2,19 +2,19 @@ let directions;
 
 class Block {
 
-    constructor(x, w, h, backgroundWidth, speed, difficulty, lastXPosition = undefined) {
+    constructor(x, size, background, game, lastXPosition = undefined) {
 
-        this.speed = speed;
+        this.speed = game.speed;
         this.direction = 0;
         directions = {
-          LEFT: -w / 2,
-          RIGHT: w / 2,
+          LEFT: -size.w / 2,
+          RIGHT: size.w / 2,
           CENTER: 0
         };
 
-        if (lastXPosition) this.direction = this.generateDirection(w, backgroundWidth, lastXPosition, difficulty);
+        if (lastXPosition) this.direction = this.generateDirection(size, background, lastXPosition, game.difficulty);
         
-        this.points = this.createPoints(x, 0, w, h, this.direction);
+        this.points = this.createPoints(x, 0, size, this.direction);
         this.central = false;
 
     }
@@ -37,25 +37,25 @@ class Block {
         }
     }
 
-    createPoints(x, y, w, h) {
+    createPoints(x, y, size) {
         let pointArray = [];
 
         pointArray.push(new Point(x, y));
-        pointArray.push(new Point(x + w, y));
-        pointArray.push(new Point(x + w + this.direction, y - h));
-        pointArray.push(new Point(x + this.direction, y - h));
+        pointArray.push(new Point(x + size.w, y));
+        pointArray.push(new Point(x + size.w + this.direction, y - size.h));
+        pointArray.push(new Point(x + this.direction, y - size.h));
 
         return pointArray;
     }
 
-    generateDirection(blockWidth, backgroundWidth, lastXPosition, difficulty) {
+    generateDirection(size, background, lastXPosition, difficulty) {
 
         let maxLeftProbability = 10;
         let maxRightProbability = 10;
         let maxCenterProbability = 13 - difficulty;
       
-        const rightLimit = backgroundWidth - blockWidth * 2;
-        const leftLimit = 0 + blockWidth;
+        const rightLimit = background.rightX - size.w * 2;
+        const leftLimit = background.leftX + size.w;
         
         if (lastXPosition <= leftLimit) {
           maxLeftProbability = 0;
