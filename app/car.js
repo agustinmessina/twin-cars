@@ -7,8 +7,8 @@ class Car {
 
     constructor(keys, w, movement, background) {
         this.keys = keys;
-        this.x = width / 2;
-        this.y = height / 2;
+        this.x = (background.leftX + background.rightX) / 2;
+        this.y = background.height / 2;
         this.w = w;
         this.movement = movement;
         this.color = colors.WHITE;

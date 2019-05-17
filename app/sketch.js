@@ -1,12 +1,7 @@
-// const blockWidth = 50;
-// const blockHeight = 100;
 const blockSize = {
   w : 50,
   h : 100
 }
-
-// const trackWidth = blockSize.w * 6;
-// const trackHeight = blockSize.h * 3; // blockSize.w * 6
 
 const background1 = {
   rightX: blockSize.w * 6,
@@ -14,25 +9,21 @@ const background1 = {
   height: blockSize.w * 6,
   width: blockSize.h * 3
 }
-const background2 = Object.create(background1);
-background2.rightX = background1.rightX * 2;
-background2.leftX = background1.rightX;
+const background2 = {
+  rightX: blockSize.w * 12,
+  leftX: blockSize.w * 6,
+  height: blockSize.w * 6,
+  width: blockSize.h * 3
+}
 
 const gameSettings = {
-  speed: 4,
-  difficulty: 5,
+  speed: 2,
+  difficulty: 1,
   duration: 30,
   initialTime: Date.now()
 }
-// const difficulty = 5;
-// const speed = 4;
-// const gameDurationInSeconds = 30;
-// const initialTime = Date.now();
 
-let blocks1 = [];
-let blocks2 = [];
-let car1;
-let car2;
+const tracks = []
 
 let points = 0;
 let expected = 0;
@@ -40,11 +31,7 @@ let timeEnded = false;
 
 function setup() {
   createCanvas(background1.width * 2, background1.height);
-
-  blocks1.push(new Block(background1.width / 2, blockSize, background1, gameSettings));
-  blocks2.push(new Block(background2.width * 1.5, blockSize, background2, gameSettings));
-  car1 = new Car({ left: 'A', right: 'D'}, blockSize.w / 2, blockSize.w / 8, background1);
-  car2 = new Car({ left: 'Q', right: 'E'}, blockSize.w / 2, blockSize.w / 8, background2);
+  setupTracks();
 }
 
 function draw() {
@@ -53,8 +40,7 @@ function draw() {
   if ((Date.now() - gameSettings.initialTime) >= (gameSettings.duration * 1000)) timeEnded = true;
 
   if (!timeEnded) {
-    playGame(blocks1, background1, car1);
-    playGame(blocks2, background2, car2);
+    playGame();
   } else {
     pauseGame();
   }
@@ -65,54 +51,26 @@ function draw() {
 
 }
 
-function playGame(blocks, background, car) {
+function setupTracks() {
+  const track1 = {
+    road: new Road(gameSettings, background1, blockSize, background1.width / 2),
+    car: new Car({ left: 'A', right: 'D'}, blockSize.w / 2, blockSize.w / 8, background1)
+  }
+  const track2 = {
+    road: new Road(gameSettings, background2, blockSize, background2.width * 1.5),
+    car: new Car({ left: 'J', right: 'L'}, blockSize.w / 2, blockSize.w / 8, background2)
+  }
   
-  createNewBlock(blocks, background);
-
-  for (let i = 0; i < blocks.length; i++) {
-
-    removeLastBlock(i, blocks, background);
-
-    gainPointsIfCarIsInRoad(blocks[i], car);
-
-    blocks[i].show();
-    blocks[i].update();
-  }
-
-  car.show();
+  tracks.push(track1);
+  tracks.push(track2);
 }
 
-function createNewBlock(blocks, background) {
-  let lastBlock = blocks[blocks.length - 1];
-
-  if (lastBlock.points[3].y === 0) {
-    blocks.push(new Block(lastBlock.points[3].x, blockSize, background, gameSettings, lastBlock.points[3].x));
+function playGame() {
+  
+  for (const track of tracks) {
+    track.road.renderRoad();
+    track.car.show();
   }
-}
-
-function removeLastBlock(position, blocks, background) {
-  if (blocks[position].points[3].y === background.h) {
-    blocks.splice(position, 1);
-  }
-}
-
-function gainPointsIfCarIsInRoad(currentBlock, car) {
-  currentBlock.central = false;
-
-    if (checkCurrentBlock(currentBlock, background)) {
-      currentBlock.central = true;
-
-      let difference = currentBlock.points[0].y - background.height / 2;
-
-      const xModifier = difference / blockSize.h * currentBlock.direction;
-
-      const partialX1 = currentBlock.points[0].x + xModifier;
-      const partialX2 = currentBlock.points[1].x + xModifier;
-
-      car.updateColor(partialX1, partialX2);
-      points += car.calculatePoints(partialX1, partialX2);
-      expected += 1;
-    }
 }
 
 function pauseGame() {
@@ -124,19 +82,33 @@ function pauseGame() {
   car.show();
 }
 
-function keyPressed(car) {
-  if (keyCode === car.leftKey.charCodeAt(0) || keyCode === car.rightKey.charCodeAt(0)) {
-    car.move(String.fromCharCode(keyCode));
-  }
-}
-
-function checkCurrentBlock(block, background) {
-  const max = background.height / 2 + blockSize.h;
-  const min = background.height / 2;
-
-  if (block.points[0].y > min && block.points[0].y < max) {
-    return true;
+function keyPressed() {
+  for (const track of tracks) {
+    const car = track.car;
+    
+    if (keyCode === car.keys.left.charCodeAt(0) && car.x > car.background.leftX) {
+      car.move(String.fromCharCode(keyCode));
+    } else if (keyCode === car.keys.right.charCodeAt(0) && car.x < car.background.rightX) {
+      car.move(String.fromCharCode(keyCode));
+    }
   }
 
-  return false;
+  // function gainPointsIfCarIsInRoad(currentBlock, car) {
+  //   currentBlock.central = false;
+  
+  //     if (checkCurrentBlock(currentBlock, background)) {
+  //       currentBlock.central = true;
+  
+  //       let difference = currentBlock.points[0].y - background.height / 2;
+  
+  //       const xModifier = difference / blockSize.h * currentBlock.direction;
+  
+  //       const partialX1 = currentBlock.points[0].x + xModifier;
+  //       const partialX2 = currentBlock.points[1].x + xModifier;
+  
+  //       car.updateColor(partialX1, partialX2);
+  //       points += car.calculatePoints(partialX1, partialX2);
+  //       expected += 1;
+  //     }
+  // }
 }
