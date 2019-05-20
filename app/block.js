@@ -21,6 +21,7 @@ class Block {
 
     show() {
         strokeJoin(ROUND);
+        stroke(255);
         fill(255);
         beginShape();
 

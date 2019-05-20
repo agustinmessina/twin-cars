@@ -17,9 +17,9 @@ const background2 = {
 }
 
 const gameSettings = {
-  speed: 2,
+  speed: 1,
   difficulty: 1,
-  duration: 30,
+  duration: 360,
   initialTime: Date.now()
 }
 
@@ -29,9 +29,12 @@ let points = 0;
 let expected = 0;
 let timeEnded = false;
 
+let gamepad;
+
 function setup() {
   createCanvas(background1.width * 2, background1.height);
   setupTracks();
+  
 }
 
 function draw() {
@@ -54,11 +57,11 @@ function draw() {
 function setupTracks() {
   const track1 = {
     road: new Road(gameSettings, background1, blockSize, background1.width / 2),
-    car: new Car({ left: 'A', right: 'D'}, blockSize.w / 2, blockSize.w / 8, background1)
+    car: new Car({ left: 'A', right: 'D'}, blockSize.w / 2, blockSize.w / 28, background1)
   }
   const track2 = {
     road: new Road(gameSettings, background2, blockSize, background2.width * 1.5),
-    car: new Car({ left: 'J', right: 'L'}, blockSize.w / 2, blockSize.w / 8, background2)
+    car: new Car({ left: 'J', right: 'L'}, blockSize.w / 2, blockSize.w / 28, background2)
   }
   
   tracks.push(track1);
@@ -67,9 +70,32 @@ function setupTracks() {
 
 function playGame() {
   
+  
+  
   for (const track of tracks) {
     track.road.renderRoad();
     track.car.show();
+  }
+
+  const gamepad = navigator.getGamepads()[0];
+  if (gamepad) {
+    // for (let i = 0; i < gamepad.axes.length; i++) {
+    //   // console.log(gamepad.axes[i]);
+    //   if (abs(gamepad.axes[i]) > 0.5) {
+    //     console.log(`Giro el axe ${i} con valor ${gamepad.axes[i]}`);
+    //   }
+    // }
+    if (gamepad.axes[0] > 0.5) {
+      tracks[0].car.move('D');
+    } else if (gamepad.axes[0] < -0.5) {
+      tracks[0].car.move('A');
+    }
+
+    if (gamepad.axes[2] > 0.5) {
+      tracks[1].car.move('L');
+    } else if (gamepad.axes[2] < -0.5) {
+      tracks[1].car.move('J');
+    }
   }
 }
 

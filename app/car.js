@@ -17,6 +17,7 @@ class Car {
     }
 
     show() {
+        stroke(0);
         fill(this.color);
         rect(this.x, this.y, this.w, this.w / 3 * 2);
     }
