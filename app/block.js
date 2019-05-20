@@ -2,7 +2,7 @@ let directions;
 
 class Block {
 
-    constructor(x, size, background, game, lastXPosition = undefined) {
+    constructor(x, size, background, game, lastXPosition = undefined, y = 0) {
 
         this.speed = game.speed;
         this.direction = 0;
@@ -14,7 +14,7 @@ class Block {
 
         if (lastXPosition) this.direction = this.generateDirection(size, background, lastXPosition, game.difficulty);
         
-        this.points = this.createPoints(x, 0, size, this.direction);
+        this.points = this.createPoints(x, y, size, this.direction);
         this.central = false;
 
     }

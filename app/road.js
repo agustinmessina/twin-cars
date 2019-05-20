@@ -25,13 +25,22 @@ class Road {
         }
     }
 
+    renderStaticRoad() {
+        for (const block of this.blocks) {
+            block.show();
+        }
+    }
+
     setupRoad(initialPosition) {
-        this.blocks.push(new Block(initialPosition, this.blockSize, this.background, this.gameSettings));
-        console.log('blocks', this.blocks);
+        const roadLenght = Math.round((this.background.height + this.blockSize.h) / this.blockSize.h ) ;
+        
+        for (let i = roadLenght - 1; i >= 0; i--) {
+            this.blocks.push(new Block(initialPosition, this.blockSize, this.background, this.gameSettings, undefined, this.blockSize.h * i));
+        }
     }
 
     createNewBlock() {
-        let lastBlock = this.blocks[this.blocks.length - 1];
+        const lastBlock = this.blocks[this.blocks.length - 1];
 
         if (lastBlock.points[3].y === 0) {
             this.blocks.push(new Block(lastBlock.points[3].x, this.blockSize, this.background, this.gameSettings, lastBlock.points[3].x));
@@ -58,9 +67,12 @@ class Road {
     getRoadCenter() {
         for (const block of this.blocks) {
             if (block.central) {
+                const difference = block.points[0].y - this.background.height / 2;
+                const xModifier = difference / this.blockSize.h * block.direction;
+
                 return {
-                    xLeft: block.points[0].x,
-                    xRight: block.points[1].x
+                    xLeft: block.points[0].x + xModifier,
+                    xRight: block.points[1].x + xModifier
                 };
             }
         }
