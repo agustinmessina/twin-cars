@@ -46,8 +46,6 @@ class Car {
 
     calculatePoints(leftLimit, rightLimit) {
         let difference = 0;
-
-        // console.log('x', this.x);
         
         if (this.x < leftLimit) {
             difference = leftLimit - this.x;
