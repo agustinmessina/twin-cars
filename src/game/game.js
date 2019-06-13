@@ -1,3 +1,6 @@
+import Road from './road';
+import Car from './car';
+
 const blockSize = {
     w: 50,
     h: 100
@@ -16,32 +19,33 @@ const background2 = {
     width: blockSize.w * 6
 }
 
-class Game {
-    constructor(gameSettings) {
+export default class Game {
+    constructor(gameSettings, p5) {
         this.gameSettings = gameSettings;
+        this.p5 = p5;
         this.tracks = this.setupTracks();
     }
 
     playGame() {
-        background(0);
+        this.p5.background(0);
         this.handleGamepad();
 
         for (const track of this.tracks) {
             track.road.renderRoad();
             track.car.show();
             this.gainPoints(track);
-            fill(255);
-            text(Math.floor(track.points), track.road.background.leftX + 10, 20);
+            this.p5.fill(255);
+            this.p5.text(Math.floor(track.points), track.road.background.leftX + 10, 20);
         }
     }
 
     pauseGame() {
-        for (const track of tracks) {
+        for (const track of this.tracks) {
             track.road.renderStaticRoad();
             track.car.static = true;
             track.car.show();
-            fill(255);
-            text(Math.floor(track.points), track.road.background.leftX + 10, 20);
+            this.p5.fill(255);
+            this.p5.text(Math.floor(track.points), track.road.background.leftX + 10, 20);
         }
     }
 
@@ -49,13 +53,13 @@ class Game {
         const tracks = [];
 
         const track1 = {
-            road: new Road(this.gameSettings, background1, blockSize, background1.width / 2),
-            car: new Car({ left: 'A', right: 'D' }, blockSize.w / 2, blockSize.w / 8, background1),
+            road: new Road(this.gameSettings, background1, blockSize, background1.width / 2, this.p5),
+            car: new Car({ left: 'A', right: 'D' }, blockSize.w / 2, blockSize.w / 8, background1, this.p5),
             points: 0
         }
         const track2 = {
-            road: new Road(this.gameSettings, background2, blockSize, background2.width * 1.5),
-            car: new Car({ left: 'J', right: 'L' }, blockSize.w / 2, blockSize.w / 8, background2),
+            road: new Road(this.gameSettings, background2, blockSize, background2.width * 1.5, this.p5),
+            car: new Car({ left: 'J', right: 'L' }, blockSize.w / 2, blockSize.w / 8, background2, this.p5),
             points: 0
         }
 
@@ -66,8 +70,7 @@ class Game {
     }
 
     setupGame() {
-
-        createCanvas(background1.width * 2, background1.height);
+        this.p5.createCanvas(background1.width * 2, background1.height);
     }
 
     gainPoints(track) {
@@ -88,15 +91,15 @@ class Game {
             //   }
             // }
             if (gamepad.axes[0] > 0.5) {
-                tracks[0].car.move('D');
+                this.tracks[0].car.move('D');
             } else if (gamepad.axes[0] < -0.5) {
-                tracks[0].car.move('A');
+                this.tracks[0].car.move('A');
             }
 
             if (gamepad.axes[2] > 0.5) {
-                tracks[1].car.move('L');
+                this.tracks[1].car.move('L');
             } else if (gamepad.axes[2] < -0.5) {
-                tracks[1].car.move('J');
+                this.tracks[1].car.move('J');
             }
         }
     }
