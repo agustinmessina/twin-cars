@@ -1,8 +1,7 @@
 import React from 'react';
 import './main-menu.css';
 import ConfigMenu from '../config-menu/config-menu';
-import sketch from '../../sketch';
-import P5Wrapper from 'react-p5-wrapper';
+import GameComponent from '../../game/game-component';
 
 class MainMenu extends React.Component {
   constructor(props) {
@@ -12,7 +11,7 @@ class MainMenu extends React.Component {
       gameSettings: {
         speed: 4,
         difficulty: 3,
-        duration: 35,
+        duration: 10,
       },
       inCofigMenu: false,
       inGame: false,
@@ -38,20 +37,26 @@ class MainMenu extends React.Component {
     })
   }
 
+  // handleGameFinished() {
+  //   this.setState({
+  //     inGame: false,
+  //   })
+  // }
+
   render() {
     return (
       <div>
         {!this.state.inCofigMenu && !this.state.inGame &&
           <div>
-            <button onClick={this.handlePlayClick.bind(this)}>Jugar</button>
-            <button onClick={this.handleConfigClick.bind(this)}>Configurar</button>
+            <button onClick={() => this.handlePlayClick()}>Jugar</button>
+            <button onClick={() => this.handleConfigClick()}>Configurar</button>
           </div>
         }
         {this.state.inCofigMenu &&
-          <ConfigMenu gameSettings={this.state.gameSettings} onSave={this.handleSave.bind(this)} />
+          <ConfigMenu gameSettings={this.state.gameSettings} onSave={settings => this.handleSave(settings)} />
         }
         {this.state.inGame &&
-          <P5Wrapper sketch={sketch} gameSettings={this.state.gameSettings} />
+          <GameComponent gameSettings={this.state.gameSettings} />
         }
       </div>
     )

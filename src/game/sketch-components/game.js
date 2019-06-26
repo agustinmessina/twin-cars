@@ -20,10 +20,43 @@ const background2 = {
 }
 
 export default class Game {
-    constructor(gameSettings, p5) {
-        this.gameSettings = gameSettings;
+    constructor(p5) {
         this.p5 = p5;
+        this.gameSettings = null;
+        this.tracks = null;
+    }
+
+    setupGame(gameSettings) {
+        this.gameSettings = gameSettings;
         this.tracks = this.setupTracks();
+        this.p5.createCanvas(background1.width * 2, background1.height);
+    }
+
+    setupTracks() {
+        const tracks = [];
+
+        const track1 = {
+            road: new Road(this.gameSettings, background1, blockSize, background1.width / 2, this.p5),
+            car: new Car({ left: 'A', right: 'D' }, blockSize.w / 2, blockSize.w / 8, background1, this.p5),
+            points: 0
+        }
+        const track2 = {
+            road: new Road(this.gameSettings, background2, blockSize, background2.width * 1.5, this.p5),
+            car: new Car({ left: 'J', right: 'L' }, blockSize.w / 2, blockSize.w / 8, background2, this.p5),
+            points: 0
+        }
+
+        tracks.push(track1);
+        tracks.push(track2);
+
+        return tracks;
+    }
+
+    showCountdown(number) {
+        this.p5.background(0);
+        this.p5.fill(255);
+        this.p5.textSize(32);
+        this.p5.text(number, this.p5.width / 2, this.p5.height / 2);
     }
 
     playGame() {
@@ -47,30 +80,6 @@ export default class Game {
             this.p5.fill(255);
             this.p5.text(Math.floor(track.points), track.road.background.leftX + 10, 20);
         }
-    }
-
-    setupTracks() {
-        const tracks = [];
-
-        const track1 = {
-            road: new Road(this.gameSettings, background1, blockSize, background1.width / 2, this.p5),
-            car: new Car({ left: 'A', right: 'D' }, blockSize.w / 2, blockSize.w / 8, background1, this.p5),
-            points: 0
-        }
-        const track2 = {
-            road: new Road(this.gameSettings, background2, blockSize, background2.width * 1.5, this.p5),
-            car: new Car({ left: 'J', right: 'L' }, blockSize.w / 2, blockSize.w / 8, background2, this.p5),
-            points: 0
-        }
-
-        tracks.push(track1);
-        tracks.push(track2);
-
-        return tracks;
-    }
-
-    setupGame() {
-        this.p5.createCanvas(background1.width * 2, background1.height);
     }
 
     gainPoints(track) {
