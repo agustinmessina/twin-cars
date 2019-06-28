@@ -1,0 +1,74 @@
+.container {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid black;
+  width: 300px;
+  height: 300px;
+  background: grey;
+}
+
+.parent {
+  height: 100vh;
+  background: grey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.score, .highscore {
+  background: lightgray;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: space-around;
+  align-items: center;
+}
+
+.highscore {
+  font-size: 0.95rem;
+}
+
+.buttons {
+  background: lightgray;
+  width: 100%;
+  margin: 5px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.buttons > button {
+  width: 25%;
+  padding: 1px;
+}
+
+canvas {
+  border: 2px solid white;
+  /* width: 110vw !important; */
+  /* max-width: 100vw; */
+  /* height: 100vh !important; */
+  /* max-height: 100vh; */
+}
+
+hr {
+  width: 90%;
+}
+
+.score > p {
+  margin: 0;
+  background: whitesmoke;
+  width: 45%;
+  text-align: center;
+  /* padding: 5px;
+  margin: 1px; */
+  /* display: flex; */
+  /* width: 50%; */
+  /* justify-content: flex-end;
+  justify-items: flex-end;
+  align-content: flex-end;
+  align-items: flex-end; */
+}
