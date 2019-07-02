@@ -1,66 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './main-menu.css';
 import ConfigMenu from '../config-menu/config-menu';
 import GameComponent from '../../game/game-component';
 
-class MainMenu extends React.Component {
-  constructor(props) {
-    super(props);
+function MainMenu() {
+  const [gameSettings, setGameSettings] = useState({
+    speed: 4,
+    difficulty: 3,
+    duration: 10,
+  });
 
-    this.state = {
-      gameSettings: {
-        speed: 4,
-        difficulty: 3,
-        duration: 10,
-      },
-      inCofigMenu: false,
-      inGame: false,
-    }
+  const [inCofigMenu, setInConfigMenu] = useState(false);
+  const [inGame, setInGame] = useState(false);
+
+  function handleSave(settings) {
+    setGameSettings(settings);
+    setInConfigMenu(false);
   }
 
-  handleSave(settings) {
-    this.setState({
-      gameSettings: settings,
-      inCofigMenu: false,
-    });
+  function handleConfigClick() {
+    setInConfigMenu(true);
   }
 
-  handleConfigClick() {
-    this.setState({
-      inCofigMenu: true,
-    })
+  function handlePlayClick() {
+    setInGame(true);
   }
 
-  handlePlayClick() {
-    this.setState({
-      inGame: true,
-    })
+  function handleGameFinished() {
+    setInGame(false);
   }
 
-  // handleGameFinished() {
-  //   this.setState({
-  //     inGame: false,
-  //   })
-  // }
-
-  render() {
-    return (
-      <div>
-        {!this.state.inCofigMenu && !this.state.inGame &&
-          <div>
-            <button onClick={() => this.handlePlayClick()}>Jugar</button>
-            <button onClick={() => this.handleConfigClick()}>Configurar</button>
-          </div>
-        }
-        {this.state.inCofigMenu &&
-          <ConfigMenu gameSettings={this.state.gameSettings} onSave={settings => this.handleSave(settings)} />
-        }
-        {this.state.inGame &&
-          <GameComponent gameSettings={this.state.gameSettings} />
-        }
-      </div>
-    )
-  }
+  return (
+    <div>
+      {!inCofigMenu && !inGame &&
+        <div>
+          <button onClick={handlePlayClick}>Jugar</button>
+          <button onClick={handleConfigClick}>Configurar</button>
+        </div>
+      }
+      {inCofigMenu &&
+        <ConfigMenu gameSettings={gameSettings} onSave={settings => handleSave(settings)} />
+      }
+      {inGame &&
+        <GameComponent gameSettings={gameSettings} />
+      }
+    </div>
+    // <GameComponent gameSettings={gameSettings} />
+  )
 }
 
 export default MainMenu;
