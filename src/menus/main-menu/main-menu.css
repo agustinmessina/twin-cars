@@ -1,10 +1,5 @@
-/* button {
-  display: block;
-  background-color: gainsboro;
-  border: 1px solid black;
-  border-radius: 5px;
-  font-size: 25px;
-  text-transform: uppercase;
-  width: 200px;
-  color: white;
-} */
+.main-menu {
+  display: grid;
+  align-content: space-around;
+  justify-content: center;
+}

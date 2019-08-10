@@ -31,21 +31,20 @@ function MainMenu() {
   }
 
   return (
-    <div>
+    <div className="parent-container">
       {!inCofigMenu && !inGame &&
-        <div>
-          <button onClick={handlePlayClick}>Jugar</button>
-          <button onClick={handleConfigClick}>Configurar</button>
+        <div className="menu main-menu">
+          <button className="primary-btn" onClick={handlePlayClick}>Jugar</button>
+          <button className="secondary-btn" onClick={handleConfigClick}>Configurar</button>
         </div>
       }
       {inCofigMenu &&
         <ConfigMenu gameSettings={gameSettings} onSave={settings => handleSave(settings)} />
       }
       {inGame &&
-        <GameComponent gameSettings={gameSettings} />
+        <GameComponent gameSettings={gameSettings} onGameFinished={handleGameFinished}/>
       }
     </div>
-    // <GameComponent gameSettings={gameSettings} />
   )
 }
 
