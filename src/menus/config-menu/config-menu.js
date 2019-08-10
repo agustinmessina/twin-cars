@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import './config-menu.css';
 
 function Option({name, min, max, value, step, onChange}) {
   return (
-    <div>
+    <div className="option">
       <h3>{name}</h3>
-      <input 
+      <input
+        className="slider" 
         type="range" 
         min={min} 
         max={max} 
@@ -20,7 +22,7 @@ function Option({name, min, max, value, step, onChange}) {
 function ConfigMenu({gameSettings, onSave}) {
   const [options, setOptions] = useState({
     difficulty: {
-      name: 'Dificultad',
+      name: 'DIFICULTAD',
       min: 1,
       max: 10,
       value: gameSettings.difficulty,
@@ -32,7 +34,7 @@ function ConfigMenu({gameSettings, onSave}) {
       value: gameSettings.speed,
     },
     duration: {
-      name: 'Duracion',
+      name: 'DURACION',
       min: 30,
       max: 180,
       value: gameSettings.duration,
@@ -72,11 +74,24 @@ function ConfigMenu({gameSettings, onSave}) {
   }
 
   return (
-    <div>
-      {renderOption('difficulty')}
-      {renderOption('speed')}
-      {renderOption('duration')}
-      <button onClick={() => onSave(getGameSettings())}>Guardar</button>
+    <div className="menu menu-config">
+      <h1 className="title">CONFIGURACION</h1>
+      <div className="options">
+        {renderOption('difficulty')}
+        {/* {renderOption('speed')} */}
+        {renderOption('duration')}
+      </div>
+      <button
+        className="secondary-btn cancel-btn"
+      >
+        CANCELAR
+      </button>
+      <button
+        className="primary-btn save-btn" 
+        onClick={() => onSave(getGameSettings())}
+      >
+        GUARDAR
+      </button>
     </div>
   );
 }
