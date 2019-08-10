@@ -34,8 +34,8 @@ function MainMenu() {
     <div className="parent-container">
       {!inCofigMenu && !inGame &&
         <div className="menu main-menu">
-          <button className="primary-btn" onClick={handlePlayClick}>Jugar</button>
-          <button className="secondary-btn" onClick={handleConfigClick}>Configurar</button>
+          <button className="primary-btn" onClick={handlePlayClick}>JUGAR</button>
+          <button className="secondary-btn" onClick={handleConfigClick}>CONFIGURAR</button>
         </div>
       }
       {inCofigMenu &&
