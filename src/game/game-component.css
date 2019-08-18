@@ -1,74 +1,56 @@
-.container {
-  position: absolute;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 2px solid black;
-  width: 300px;
-  height: 300px;
-  background: grey;
-}
-
-.parent {
-  height: 100vh;
-  background: grey;
-  display: flex;
-  justify-content: center;
+.menu-game {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 4fr 1fr;
+  grid-template-areas:
+    "game-title game-title"
+    "scores scores"
+    "quit-btn play-again-btn";
+  justify-items: center;
   align-items: center;
 }
 
-.score, .highscore {
-  background: lightgray;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: space-around;
+.game-title {
+  grid-area: game-title;
+}
+
+.scores {
+  align-self: stretch;
+  width: 95%;
+  grid-area: scores;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   align-items: center;
+  justify-items: center;
+  grid-template-areas:
+    "score-text score"
+    ". .";
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
 }
 
-.highscore {
-  font-size: 0.95rem;
+.score-text {
+  grid-area: score-text;
 }
 
-.buttons {
-  background: lightgray;
-  width: 100%;
-  margin: 5px;
-  display: flex;
-  justify-content: space-around;
+.score {
+  grid-area: score;
 }
 
-.buttons > button {
-  width: 25%;
-  padding: 1px;
+.score, .score-text {
+  color: white;
+  text-shadow:
+    -0.2px 0 yellow, 
+    0 0.2px yellow, 
+    0.2px 0 yellow, 
+    0 -0.2px yellow;
 }
 
-canvas {
-  border: 2px solid white;
-  /* width: 110vw !important; */
-  /* max-width: 100vw; */
-  /* height: 100vh !important; */
-  /* max-height: 100vh; */
+.quit-btn {
+  grid-area: quit-btn;
 }
 
-hr {
-  width: 90%;
-}
-
-.score > p {
-  margin: 0;
-  background: whitesmoke;
-  width: 45%;
-  text-align: center;
-  /* padding: 5px;
-  margin: 1px; */
-  /* display: flex; */
-  /* width: 50%; */
-  /* justify-content: flex-end;
-  justify-items: flex-end;
-  align-content: flex-end;
-  align-items: flex-end; */
+.play-again-btn {
+  grid-area: play-again-btn;
 }
