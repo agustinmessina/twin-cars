@@ -75,7 +75,7 @@ function ConfigMenu({gameSettings, onSave}) {
 
   return (
     <div className="menu menu-config">
-      <h1 className="title">CONFIGURACION</h1>
+      <h1 className="title white-yellow-words">CONFIGURACION</h1>
       <div className="options">
         {renderOption('difficulty')}
         {/* {renderOption('speed')} */}

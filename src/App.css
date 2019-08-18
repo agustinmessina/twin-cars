@@ -32,8 +32,9 @@ body {
 }
 
 .primary-btn, .secondary-btn {
-  padding: 12px;
-  min-width: 150px;
+  padding: 0;
+  min-width: 160px;
+  min-height: 40px;
   border-radius: 50px;
   color: white;
 }
@@ -56,4 +57,13 @@ body {
     0 0.5px gray, 
     0.5px 0 gray, 
     0 -0.5px gray;
+}
+
+.white-yellow-words {
+  color: white;
+  text-shadow:
+    -1.0px 0 var(--dark-golden-color), 
+    0 1.0px var(--dark-golden-color), 
+    1.0px 0 var(--dark-golden-color), 
+    0 -1.0px var(--dark-golden-color);
 }
