@@ -7,8 +7,6 @@ export default function sketch(p) {
   let timeEnded = false;
   let gameStarted = false;
 
-  // let gameEnded;
-
   p.myCustomRedrawAccordingToNewPropsHandler = props => {
     if (props && props.gameSettings) {
       gameSettings = {
@@ -16,9 +14,13 @@ export default function sketch(p) {
         initialTime: Date.now(),
       }
 
+      p.onGameEnded = props.onGameEnded;
+
       // gameEnded = props.onGameFinished
     }
   }
+
+  p.onGameEnded = () => {}
   
   p.setup = () => {
     game = new Game(p);
@@ -42,14 +44,14 @@ export default function sketch(p) {
       return;
     }
 
-    timeEnded = (Date.now() - gameSettings.initialTime) >= (gameSettings.duration * 1000);
+    timeEnded = (Date.now() - gameSettings.initialTime) >= ((gameSettings.duration + countdownDuration) * 1000);
 
     if (!timeEnded) {
       game.playGame();
       expected++;
     } else {
       game.pauseGame();
-      // gameEnded();
+      p.onGameEnded();
     }
   
     p.fill(255, 0, 0);

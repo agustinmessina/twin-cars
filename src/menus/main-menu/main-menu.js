@@ -26,7 +26,7 @@ function MainMenu() {
     setInGame(true);
   }
 
-  function handleGameFinished() {
+  function handleGameQuit() {
     setInGame(false);
   }
 
@@ -42,7 +42,7 @@ function MainMenu() {
         <ConfigMenu gameSettings={gameSettings} onSave={settings => handleSave(settings)} />
       }
       {inGame &&
-        <GameComponent gameSettings={gameSettings} onGameFinished={handleGameFinished}/>
+        <GameComponent gameSettings={gameSettings} onGameQuit={handleGameQuit}/>
       }
     </div>
   )
