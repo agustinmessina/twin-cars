@@ -3,9 +3,9 @@ const colors = {
     WHITE: [255, 255, 255]
 }
 
-class Car {
+export default class Car {
 
-    constructor(keys, w, movement, background) {
+    constructor(keys, w, movement, background, p5) {
         this.keys = keys;
         this.x = (background.leftX + background.rightX) / 2;
         this.y = background.height / 2;
@@ -13,13 +13,14 @@ class Car {
         this.movement = movement;
         this.color = colors.WHITE;
         this.static = false;
-        this.background = background
+        this.background = background;
+        this.p5 = p5;
     }
 
     show() {
-        stroke(0);
-        fill(this.color);
-        rect(this.x, this.y, this.w, this.w / 3 * 2);
+        this.p5.stroke(0);
+        this.p5.fill(this.color);
+        this.p5.rect(this.x, this.y, this.w, this.w / 3 * 2);
     }
 
     move(keyPressed) {
@@ -47,8 +48,6 @@ class Car {
     calculatePoints(leftLimit, rightLimit) {
         let difference = 0;
 
-        // console.log('x', this.x);
-        
         if (this.x < leftLimit) {
             difference = leftLimit - this.x;
         } else if ((this.x + this.w) > rightLimit) {

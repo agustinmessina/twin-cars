@@ -1,0 +1,78 @@
+.game-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  justify-items: center;
+  align-items: center;
+}
+
+.game {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+}
+
+canvas {
+  min-width: 950px;
+  min-height: 725px;
+  border: 3px solid gray;
+}
+
+.menu-game {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+  z-index: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 4fr 1fr;
+  grid-template-areas:
+    "game-title game-title"
+    "scores scores"
+    "quit-btn play-again-btn";
+  justify-items: center;
+  align-items: center;
+}
+
+.game-title {
+  grid-area: game-title;
+}
+
+.scores {
+  align-self: stretch;
+  width: 95%;
+  grid-area: scores;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  grid-template-areas:
+    "score-text score"
+    ". .";
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+}
+
+.score-text {
+  grid-area: score-text;
+}
+
+.score {
+  grid-area: score;
+}
+
+.score, .score-text {
+  color: white;
+  text-shadow:
+    -0.2px 0 yellow, 
+    0 0.2px yellow, 
+    0.2px 0 yellow, 
+    0 -0.2px yellow;
+}
+
+.quit-btn {
+  grid-area: quit-btn;
+}
+
+.play-again-btn {
+  grid-area: play-again-btn;
+}

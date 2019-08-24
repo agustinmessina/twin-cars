@@ -1,0 +1,68 @@
+.menu-config {
+  display: grid;
+  font-size: 0.7rem;
+  align-items: center;
+  justify-items: center;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 2fr 1fr;
+  grid-template-areas:
+    "title title"
+    "options options"
+    "cancel save";
+}
+
+.title {
+  grid-area: title;
+  width: 90%;
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid white;
+}
+
+.options {
+  grid-area: options;
+  color: white;
+  display: grid;
+  justify-items: center;
+  height: 100%;
+  width: 90%;
+  border-bottom: 1px solid white;
+  padding-bottom: 10px;
+}
+
+.option {
+  width: 90%;
+}
+
+.option > span {
+  padding: 10px;
+}
+
+.option > h3, .option > span {
+  letter-spacing: 0.07rem;
+}
+
+.slider {
+  appearance: none;
+  width: 80%;
+  height: 10px;
+  background: linear-gradient(90deg, white, var(--dark-golden-color));
+}
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background: var(--golden-color);
+  border: 1px solid gray;
+  cursor: pointer;
+}
+
+.save-btn {
+  grid-area: save;
+}
+
+.cancel-btn {
+  grid-area: cancel;
+}

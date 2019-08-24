@@ -1,0 +1,5 @@
+.main-menu {
+  display: grid;
+  align-content: space-around;
+  justify-content: center;
+}

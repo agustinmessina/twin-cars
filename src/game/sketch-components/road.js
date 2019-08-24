@@ -1,10 +1,13 @@
-class Road {
-    constructor(gameSettings, background, blockSize, initialPosition) {
+import Block from './block';
+
+export default class Road {
+    constructor(gameSettings, background, blockSize, initialPosition, p5) {
 
         this.gameSettings = gameSettings;
         this.background = background;
         this.blockSize = blockSize;
         this.blocks = [];
+        this.p5 = p5;
 
         this.setupRoad(initialPosition);
     }
@@ -32,10 +35,10 @@ class Road {
     }
 
     setupRoad(initialPosition) {
-        const roadLenght = Math.round((this.background.height + this.blockSize.h) / this.blockSize.h ) ;
-        
+        const roadLenght = Math.round((this.background.height + this.blockSize.h) / this.blockSize.h);
+
         for (let i = roadLenght - 1; i >= 0; i--) {
-            this.blocks.push(new Block(initialPosition, this.blockSize, this.background, this.gameSettings, undefined, this.blockSize.h * i));
+            this.blocks.push(new Block(initialPosition, this.blockSize, this.background, this.gameSettings, this.p5, undefined, this.blockSize.h * i));
         }
     }
 
@@ -43,7 +46,7 @@ class Road {
         const lastBlock = this.blocks[this.blocks.length - 1];
 
         if (lastBlock.points[3].y === 0) {
-            this.blocks.push(new Block(lastBlock.points[3].x, this.blockSize, this.background, this.gameSettings, lastBlock.points[3].x));
+            this.blocks.push(new Block(lastBlock.points[3].x, this.blockSize, this.background, this.gameSettings, this.p5, lastBlock.points[3].x));
         }
     }
 
