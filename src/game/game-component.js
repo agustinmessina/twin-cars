@@ -5,12 +5,22 @@ import './game-component.css';
 
 function GameComponent({ gameSettings, onGameQuit }) {
   const [gameEnded, setGameEnded] = useState(false);
+  const [points, setPoints] = useState(0);
+  const [highscore, setHighscore] = useState(0);
+
+  const handleGameEnded = points => {
+    setPoints(points);
+    if (points > highscore)
+      setHighscore(points);
+
+    setGameEnded(true);
+  }
 
   return (
     <div className="game-container">
       {!gameEnded &&
         <div className="game">
-          <P5Wrapper sketch={sketch} gameSettings={gameSettings} onGameEnded={() => setGameEnded(true)}/>
+          <P5Wrapper sketch={sketch} gameSettings={gameSettings} onGameEnded={handleGameEnded}/>
         </div>
       }
       {gameEnded && 
@@ -18,7 +28,9 @@ function GameComponent({ gameSettings, onGameQuit }) {
           <h2 className="game-title white-yellow-words">JUEGO TERMINADO!</h2>
           <div className="scores">
             <div className="score-text">PUNTAJE</div>
-            <div className="score">15000</div>
+            <div className="score">{points}</div>
+            <div className="highscore-text">PUNTAJE MAS ALTO</div>
+            <div className="highscore">{highscore}</div>
           </div>
           <button 
             className="secondary-btn quit-btn" 
