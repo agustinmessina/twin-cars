@@ -5,9 +5,9 @@ import GameComponent from '../../game/game-component';
 
 function MainMenu() {
   const [gameSettings, setGameSettings] = useState({
-    speed: 4,
-    difficulty: 3,
-    duration: 10,
+    speed: 1,
+    difficulty: 1,
+    duration: 60,
   });
 
   const [inCofigMenu, setInConfigMenu] = useState(false);
@@ -39,7 +39,7 @@ function MainMenu() {
         </div>
       }
       {inCofigMenu &&
-        <ConfigMenu gameSettings={gameSettings} onSave={settings => handleSave(settings)} />
+        <ConfigMenu gameSettings={gameSettings} onSave={settings => handleSave(settings)} onCancel={() => setInConfigMenu(false)} />
       }
       {inGame &&
         <GameComponent gameSettings={gameSettings} onGameQuit={handleGameQuit}/>
