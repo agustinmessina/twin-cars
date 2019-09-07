@@ -52,11 +52,30 @@ export default class Block {
 
   generateDirection(size, background, lastXPosition, difficulty) {
 
-    const maxProbabilities = this.getMaxProbabilities(size, background, lastXPosition, difficulty);
+    const getMaxProbabilities = () => {
+      const minProbabilities = {
+        left: 10,
+        right: 10,
+        center: 20 - difficulty * 1.5
+      }
+  
+      const rightLimit = background.rightX - size.w * 2;
+      const leftLimit = background.leftX + size.w;
+  
+      if (lastXPosition <= leftLimit) {
+        minProbabilities.left = 0;
+      } else if (lastXPosition >= rightLimit) {
+        minProbabilities.right = 0;
+      }
+  
+      return minProbabilities;
+    }
+
+    const minProbabilities = getMaxProbabilities();
     
-    const leftDirectionChance = this.p5.random(1, maxProbabilities.left);
-    const rightDirectionChance = this.p5.random(1, maxProbabilities.right);
-    const centerDirectionChance = this.p5.random(1, maxProbabilities.center);
+    const leftDirectionChance = this.p5.random(minProbabilities.left, 20);
+    const rightDirectionChance = this.p5.random(minProbabilities.right, 20);
+    const centerDirectionChance = this.p5.random(minProbabilities.center, 20);
 
     const resultDirection = Math.max(leftDirectionChance, rightDirectionChance, centerDirectionChance);
 
@@ -71,26 +90,6 @@ export default class Block {
         console.error('Invalid direction');
     }
   }
-
-  getMaxProbabilities(size, background, lastXPosition, difficulty) {
-    const maxProbabilities = {
-      left: 10000,
-      right: 10000,
-      center: 15000 - difficulty * 1000 
-    }
-
-    const rightLimit = background.rightX - size.w * 2;
-    const leftLimit = background.leftX + size.w;
-
-    if (lastXPosition <= leftLimit) {
-      maxProbabilities.left = 0;
-    } else if (lastXPosition >= rightLimit) {
-      maxProbabilities.right = 0;
-    }
-
-    return maxProbabilities;
-  }
-
 }
 
 class Point {
