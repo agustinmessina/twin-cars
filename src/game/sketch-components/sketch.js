@@ -3,7 +3,6 @@ import Game from './game';
 export default function sketch(p) {
   let gameSettings;
   let game;
-  let expected = 0;
   let timeEnded = false;
   let gameStarted = false;
 
@@ -15,8 +14,6 @@ export default function sketch(p) {
       }
 
       p.onGameEnded = props.onGameEnded;
-
-      // gameEnded = props.onGameFinished
     }
   }
 
@@ -48,14 +45,10 @@ export default function sketch(p) {
 
     if (!timeEnded) {
       game.playGame();
-      expected++;
     } else {
       game.pauseGame();
-      p.onGameEnded();
+      p.onGameEnded(game.getGamePoints());
     }
-  
-    p.fill(255, 0, 0);
-    p.text(Math.floor(expected), p.width - 30, 20);
   }
   
   p.keyPressed = () => {

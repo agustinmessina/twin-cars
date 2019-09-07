@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import './config-menu.css';
 
-function Option({name, min, max, value, step, onChange}) {
+function Option({ name, min, max, value, step, onChange }) {
   return (
     <div className="option">
       <h3>{name}</h3>
       <input
-        className="slider" 
-        type="range" 
-        min={min} 
-        max={max} 
-        value={value} 
-        step={step} 
+        className="slider"
+        type="range"
+        min={min}
+        max={max}
+        value={value}
+        step={step}
         onChange={onChange}
       />
       <span>{value}</span>
@@ -19,19 +19,13 @@ function Option({name, min, max, value, step, onChange}) {
   )
 }
 
-function ConfigMenu({gameSettings, onSave}) {
+function ConfigMenu({ gameSettings, onSave, onCancel }) {
   const [options, setOptions] = useState({
     difficulty: {
       name: 'DIFICULTAD',
       min: 1,
       max: 10,
       value: gameSettings.difficulty,
-    },
-    speed: {
-      name: 'Velocidad',
-      min: 1,
-      max: 5,
-      value: gameSettings.speed,
     },
     duration: {
       name: 'DURACION',
@@ -43,16 +37,30 @@ function ConfigMenu({gameSettings, onSave}) {
   })
 
   function getGameSettings() {
+    const difficulty = Number(options['difficulty'].value);
+
+    let speed;
+    if (difficulty < 4)
+      speed = 1;
+    else if (difficulty < 6)
+      speed = 2;
+    else if (difficulty < 8)
+      speed = 2.5;
+    else if (difficulty < 10)
+      speed = 4;
+    else
+      speed = 5;
+
     return {
-      difficulty: Number(options['difficulty'].value),
-      speed: Number(options['speed'].value),
+      difficulty,
+      speed,
       duration: Number(options['duration'].value),
     }
   }
 
   function handleChange(event, optionName) {
     const newValue = event.target.value;
-    const newOptions = {...options};
+    const newOptions = { ...options };
     newOptions[optionName].value = newValue;
 
     setOptions(newOptions);
@@ -60,15 +68,15 @@ function ConfigMenu({gameSettings, onSave}) {
 
   function renderOption(optionName) {
     const option = options[optionName];
-    
+
     return (
-      <Option 
-        name={option.name} 
-        min={option.min} 
-        max={option.max} 
-        value={option.value} 
-        step={option.step} 
-        onChange={event => handleChange(event, optionName)} 
+      <Option
+        name={option.name}
+        min={option.min}
+        max={option.max}
+        value={option.value}
+        step={option.step}
+        onChange={event => handleChange(event, optionName)}
       />
     )
   }
@@ -78,16 +86,16 @@ function ConfigMenu({gameSettings, onSave}) {
       <h1 className="title white-yellow-words">CONFIGURACION</h1>
       <div className="options">
         {renderOption('difficulty')}
-        {/* {renderOption('speed')} */}
         {renderOption('duration')}
       </div>
       <button
         className="secondary-btn cancel-btn"
+        onClick={onCancel}
       >
         CANCELAR
       </button>
       <button
-        className="primary-btn save-btn" 
+        className="primary-btn save-btn"
         onClick={() => onSave(getGameSettings())}
       >
         GUARDAR
