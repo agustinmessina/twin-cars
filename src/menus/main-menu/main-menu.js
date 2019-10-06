@@ -7,7 +7,7 @@ function MainMenu() {
   const [gameSettings, setGameSettings] = useState({
     speed: 1,
     difficulty: 1,
-    duration: 60,
+    duration: 300,
   });
 
   const [inCofigMenu, setInConfigMenu] = useState(false);

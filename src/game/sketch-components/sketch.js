@@ -25,15 +25,16 @@ export default function sketch(p) {
   
   p.draw = () => {
     if (!gameSettings) return;
-
+    
     if (!gameStarted) {
       game.setupGame(gameSettings);
       gameStarted = true;
     }
 
-    const ellapsedTime = (Date.now() - gameSettings.initialTime) / 1000;
-
+    const now = Date.now();
     const countdownDuration = 3;
+    const ellapsedTime = (now - gameSettings.initialTime) / 1000;
+
     if (ellapsedTime <= countdownDuration) {
       const countdown = countdownDuration - Math.floor(ellapsedTime);
       game.showCountdown(countdown);
@@ -41,7 +42,7 @@ export default function sketch(p) {
       return;
     }
 
-    timeEnded = (Date.now() - gameSettings.initialTime) >= ((gameSettings.duration + countdownDuration) * 1000);
+    timeEnded = (now - gameSettings.initialTime) >= ((gameSettings.duration + countdownDuration) * 1000);
 
     if (!timeEnded) {
       game.playGame();
