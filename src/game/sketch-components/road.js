@@ -45,13 +45,23 @@ export default class Road {
   createNewBlock() {
     const lastBlock = this.blocks[this.blocks.length - 1];
 
-    if (lastBlock.points[3].y === 0) {
-      this.blocks.push(new Block(lastBlock.points[3].x, this.blockSize, this.background, this.gameSettings, this.p5, lastBlock.points[3].x));
+    const y = lastBlock.points[3].y;
+    if (y > -100 && y < 0) {
+      const newBlock = new Block(
+        lastBlock.points[3].x, 
+        this.blockSize, 
+        this.background, 
+        this.gameSettings, 
+        this.p5, 
+        lastBlock.points[3].x, 
+        y);
+      
+      this.blocks.push(newBlock);
     }
   }
 
   removeLastBlock(position) {
-    if (this.blocks[position].points[3].y === this.background.h) {
+    if (this.blocks[position].points[3].y >= this.background.h) {
       this.blocks.splice(position, 1);
     }
   }

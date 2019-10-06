@@ -38,18 +38,7 @@ function ConfigMenu({ gameSettings, onSave, onCancel }) {
 
   function getGameSettings() {
     const difficulty = Number(options['difficulty'].value);
-
-    let speed;
-    if (difficulty < 4)
-      speed = 1;
-    else if (difficulty < 6)
-      speed = 2;
-    else if (difficulty < 8)
-      speed = 2.5;
-    else if (difficulty < 10)
-      speed = 4;
-    else
-      speed = 5;
+    const speed = difficulty / 2;
 
     return {
       difficulty,

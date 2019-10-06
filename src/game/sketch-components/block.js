@@ -17,7 +17,6 @@ export default class Block {
 
     this.points = this.createPoints(x, y, size, this.direction);
     this.central = false;
-
   }
 
   show() {
@@ -34,9 +33,12 @@ export default class Block {
   }
 
   update() {
-    for (let point of this.points) {
-      point.y += this.speed;
-    }
+    const getSpeedModifier = () => 60 / this.p5.frameRate();
+
+    const speed = this.speed * getSpeedModifier();
+
+    for (let point of this.points)
+      point.y += speed;
   }
 
   createPoints(x, y, size) {
@@ -51,31 +53,28 @@ export default class Block {
   }
 
   generateDirection(size, background, lastXPosition, difficulty) {
-
-    const getMaxProbabilities = () => {
-      const minProbabilities = {
-        left: 10,
-        right: 10,
-        center: 20 - difficulty * 1.5
-      }
-  
-      const rightLimit = background.rightX - size.w * 2;
-      const leftLimit = background.leftX + size.w;
-  
-      if (lastXPosition <= leftLimit) {
-        minProbabilities.left = 0;
-      } else if (lastXPosition >= rightLimit) {
-        minProbabilities.right = 0;
-      }
-  
-      return minProbabilities;
+    const minProbabilities = {
+      left: 10,
+      right: 10,
+      center: 20 - difficulty * 1.5
     }
 
-    const minProbabilities = getMaxProbabilities();
-    
-    const leftDirectionChance = this.p5.random(minProbabilities.left, 20);
-    const rightDirectionChance = this.p5.random(minProbabilities.right, 20);
-    const centerDirectionChance = this.p5.random(minProbabilities.center, 20);
+    const getMaxProbabilities = () => {
+      const rightLimit = background.rightX - size.w * 2;
+      const leftLimit = background.leftX + size.w;
+
+      return {
+        center: 20,
+        left: lastXPosition <= leftLimit ? 0 : 20,
+        right: lastXPosition >= rightLimit ? 0 : 20
+      }
+    }
+
+    const maxProbabilities = getMaxProbabilities();
+
+    const leftDirectionChance = this.p5.random(minProbabilities.left, maxProbabilities.left);
+    const rightDirectionChance = this.p5.random(minProbabilities.right, maxProbabilities.right);
+    const centerDirectionChance = this.p5.random(minProbabilities.center, maxProbabilities.center);
 
     const resultDirection = Math.max(leftDirectionChance, rightDirectionChance, centerDirectionChance);
 
