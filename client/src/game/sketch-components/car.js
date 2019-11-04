@@ -33,6 +33,10 @@ export default class Car {
     }
   }
 
+  fixValue(value) {
+    this.x = value;
+  }
+
   updateColor(x1, x2) {
     let carX1 = this.x;
     let carX2 = this.x + this.w;

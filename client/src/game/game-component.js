@@ -3,7 +3,7 @@ import sketch from './sketch-components/sketch';
 import P5Wrapper from 'react-p5-wrapper';
 import './game-component.css';
 
-function GameComponent({ gameSettings, onGameQuit }) {
+function GameComponent({ gameSettings, potentiometerEvent, onGameQuit }) {
   const [gameEnded, setGameEnded] = useState(false);
   const [points, setPoints] = useState(0);
   const [highscore, setHighscore] = useState(0);
@@ -20,7 +20,11 @@ function GameComponent({ gameSettings, onGameQuit }) {
     <div className="game-container">
       {!gameEnded &&
         <div className="game">
-          <P5Wrapper sketch={sketch} gameSettings={gameSettings} onGameEnded={handleGameEnded}/>
+          <P5Wrapper
+            sketch={sketch} 
+            gameSettings={gameSettings} 
+            potentiometerEvent={potentiometerEvent} 
+            onGameEnded={handleGameEnded}/>
         </div>
       }
       {gameEnded && 

@@ -1,5 +1,6 @@
 import Road from './road';
 import Car from './car';
+import potentiometerEventListener from './potentiometerEventListener';
 
 const blockSize = {
   w: 50,
@@ -25,12 +26,21 @@ export default class Game {
     this.gameSettings = null;
     this.tracks = null;
     this.expectedPoints = 0;
+    this.potentiometerValues = {
+      p1: 0,
+      p2: 0
+    }
   }
 
-  setupGame(gameSettings) {
+  setupGame(gameSettings, potentiometerEvent) {
     this.gameSettings = gameSettings;
     this.tracks = this.setupTracks();
     this.p5.createCanvas(background1.width * 2, background1.height);
+    this.potentiometerValues = {
+      p1: (background1.rightX - background1.leftX),
+      p2: (background2.rightX - background2.leftX)
+    }
+    potentiometerEvent.addEventListener('message', event => potentiometerEventListener(event, this));
   }
 
   setupTracks() {
@@ -59,8 +69,7 @@ export default class Game {
 
   playGame() {
     this.p5.background(0);
-    this.handleGamepad();
-
+    
     for (const track of this.tracks) {
       track.road.renderRoad();
       track.car.show();
@@ -95,29 +104,6 @@ export default class Game {
     }
 
     return Math.round(points / this.expectedPoints * 1000);
-  }
-
-  handleGamepad() {
-    const gamepad = navigator.getGamepads()[0];
-    if (gamepad) {
-      // for (let i = 0; i < gamepad.axes.length; i++) {
-      //   // console.log(gamepad.axes[i]);
-      //   if (abs(gamepad.axes[i]) > 0.5) {
-      //     console.log(`Giro el axe ${i} con valor ${gamepad.axes[i]}`);
-      //   }
-      // }
-      if (gamepad.axes[0] > 0.5) {
-        this.tracks[0].car.move('D');
-      } else if (gamepad.axes[0] < -0.5) {
-        this.tracks[0].car.move('A');
-      }
-
-      if (gamepad.axes[2] > 0.5) {
-        this.tracks[1].car.move('L');
-      } else if (gamepad.axes[2] < -0.5) {
-        this.tracks[1].car.move('J');
-      }
-    }
   }
 
   handleKeystrokes(keyCode) {

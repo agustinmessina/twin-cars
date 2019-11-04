@@ -2,10 +2,11 @@ import Game from './game';
 
 export default function sketch(p) {
   let gameSettings;
+  let potentiometerEvent;
   let game;
   let timeEnded = false;
   let gameStarted = false;
-
+  
   p.myCustomRedrawAccordingToNewPropsHandler = props => {
     if (props && props.gameSettings) {
       gameSettings = {
@@ -13,6 +14,8 @@ export default function sketch(p) {
         initialTime: Date.now(),
       }
 
+      potentiometerEvent = props.potentiometerEvent;
+      
       p.onGameEnded = props.onGameEnded;
     }
   }
@@ -27,8 +30,8 @@ export default function sketch(p) {
     if (!gameSettings) return;
     
     if (!gameStarted) {
-      game.setupGame(gameSettings);
       gameStarted = true;
+      game.setupGame(gameSettings, potentiometerEvent);
     }
 
     const now = Date.now();

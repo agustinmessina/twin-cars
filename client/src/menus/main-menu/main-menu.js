@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './main-menu.css';
 import ConfigMenu from '../config-menu/config-menu';
 import GameComponent from '../../game/game-component';
@@ -12,37 +12,42 @@ function MainMenu() {
 
   const [inCofigMenu, setInConfigMenu] = useState(false);
   const [inGame, setInGame] = useState(false);
-
-  function handleSave(settings) {
+  
+  const handleSave = settings => {
     setGameSettings(settings);
     setInConfigMenu(false);
   }
 
-  function handleConfigClick() {
-    setInConfigMenu(true);
-  }
+  const [potentiometerEvent, setPotentiometerEvent] = useState(null);
+  useEffect(() => {
+    const event = new EventSource('http://localhost:3001/potentiometerValues');
+    event.addEventListener('error', error => alert('Error, no se pudo conectar con el servidor'));
+    event.addEventListener('connection-error', error => alert(`Error de conexion: ${error.data}`));
 
-  function handlePlayClick() {
-    setInGame(true);
-  }
-
-  function handleGameQuit() {
-    setInGame(false);
-  }
+    setPotentiometerEvent(event);
+  }, []);
 
   return (
     <div className="parent-container">
       {!inCofigMenu && !inGame &&
         <div className="menu main-menu">
-          <button className="primary-btn" onClick={handlePlayClick}>JUGAR</button>
-          <button className="secondary-btn" onClick={handleConfigClick}>CONFIGURAR</button>
+          <button className="primary-btn" onClick={() => setInGame(true)}>JUGAR</button>
+          <button className="secondary-btn" onClick={() => setInConfigMenu(true)}>CONFIGURAR</button>
         </div>
       }
       {inCofigMenu &&
-        <ConfigMenu gameSettings={gameSettings} onSave={settings => handleSave(settings)} onCancel={() => setInConfigMenu(false)} />
+        <ConfigMenu
+          gameSettings={gameSettings}
+          onSave={settings => handleSave(settings)}
+          onCancel={() => setInConfigMenu(false)}
+        />
       }
       {inGame &&
-        <GameComponent gameSettings={gameSettings} onGameQuit={handleGameQuit}/>
+        <GameComponent
+          gameSettings={gameSettings}
+          potentiometerEvent={potentiometerEvent}
+          onGameQuit={() => setInGame(true)}
+        />
       }
     </div>
   )

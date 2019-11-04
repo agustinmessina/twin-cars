@@ -4,7 +4,15 @@ const openConnection = require('./connection/open-connection');
 const createSerialReader = require('./connection/serial-reader');
 const inputValuesEmitter = require('./input-handler/input-values-emitter');
 
-app.get('/openConnection', async (req, res) => {
+let serialReader;
+let errorMessage;
+openConnection(createSerialReader, { port: 'COM4', baudRate: 9600 })
+  .then(reader => serialReader = reader)
+  .catch(error => errorMessage = error.message)
+
+app.get('/potentiometerValues', async (req, res) => {
+  console.log('requesting values');
+
   res.writeHead(200, {
     Connection: "keep-alive",
     "Content-Type": "text/event-stream",
@@ -12,15 +20,14 @@ app.get('/openConnection', async (req, res) => {
     "Access-Control-Allow-Origin": "*"
   });
 
-  try {
-    const serialReader = await openConnection(createSerialReader, req.query);
-    
-    inputValuesEmitter(serialReader, res);
-
-  } catch (error) {
+  if (errorMessage) {
     res.write('event: connection-error\n');
     res.write(`data: ${error.message}\n\n`);
+
+    return;
   }
+
+  inputValuesEmitter(serialReader, res);
 })
 
 app.listen(3001, () => {
