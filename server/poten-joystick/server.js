@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const path = require('path');
+const open = require('open');
 const openConnection = require('./connection/open-connection');
 const createSerialReader = require('./connection/serial-reader');
 const inputValuesEmitter = require('./input-handler/input-values-emitter');
@@ -9,6 +11,11 @@ let errorMessage;
 openConnection(createSerialReader, { port: 'COM4', baudRate: 9600 })
   .then(reader => serialReader = reader)
   .catch(error => errorMessage = error.message)
+
+app.use(express.static(path.join(
+  __dirname.substring(0, __dirname.indexOf('\\twin-cars')), 
+  '\\twin-cars\\client\\',
+  'build')));
 
 app.get('/potentiometerValues', async (req, res) => {
   console.log('requesting values');
@@ -30,6 +37,13 @@ app.get('/potentiometerValues', async (req, res) => {
   inputValuesEmitter(serialReader, res);
 })
 
-app.listen(3001, () => {
-  console.log('Listening on port 3001');
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 })
+
+const port = 3000;
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+})
+
+open(`http://localhost:${port}/`);

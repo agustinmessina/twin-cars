@@ -20,9 +20,16 @@ function MainMenu() {
 
   const [potentiometerEvent, setPotentiometerEvent] = useState(null);
   useEffect(() => {
-    const event = new EventSource('http://localhost:3001/potentiometerValues');
-    event.addEventListener('error', error => alert('Error, no se pudo conectar con el servidor'));
-    event.addEventListener('connection-error', error => alert(`Error de conexion: ${error.data}`));
+    const event = new EventSource('http://localhost:3000/potentiometerValues');
+    event.addEventListener('error', error => {
+      console.log('error', error);
+      alert('Error, no se pudo conectar con el servidor')
+      window.close();
+    });
+    event.addEventListener('connection-error', error => {
+      alert(`Error de conexion: ${error.data}`);
+      window.close();
+    })
 
     setPotentiometerEvent(event);
   }, []);
