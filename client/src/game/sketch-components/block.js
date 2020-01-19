@@ -33,9 +33,9 @@ export default class Block {
   }
 
   update() {
-    const getSpeedModifier = () => 60 / this.p5.frameRate();
+    const speedModifier = 60 / this.p5.frameRate();
 
-    const speed = this.speed * getSpeedModifier();
+    const speed = this.speed * speedModifier;
 
     for (let point of this.points)
       point.y += speed;

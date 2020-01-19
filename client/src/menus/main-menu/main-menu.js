@@ -18,8 +18,7 @@ function MainMenu() {
     setInConfigMenu(false);
   }
 
-  const [potentiometerEvent, setPotentiometerEvent] = useState(null);
-  useEffect(() => {
+  const addPotentiometerEvent = setEvent => {
     const event = new EventSource('http://localhost:3000/potentiometerValues');
     event.addEventListener('error', error => {
       console.log('error', error);
@@ -30,8 +29,16 @@ function MainMenu() {
       alert(`Error de conexion: ${error.data}`);
       window.close();
     })
+  
+    setEvent(event);
+  }
 
-    setPotentiometerEvent(event);
+  const [potentiometerEvent, setPotentiometerEvent] = useState(null);
+
+  useEffect(() => {
+    if (process.env.REACT_APP_USE_POTENTIOMETER) {
+      addPotentiometerEvent(setPotentiometerEvent);
+    }
   }, []);
 
   return (

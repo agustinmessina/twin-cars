@@ -40,7 +40,10 @@ export default class Game {
       p1: (background1.rightX - background1.leftX),
       p2: (background2.rightX - background2.leftX)
     }
-    potentiometerEvent.addEventListener('message', event => potentiometerEventListener(event, this));
+
+    if (potentiometerEvent) {
+      potentiometerEvent.addEventListener('message', event => potentiometerEventListener(event, this));
+    }
   }
 
   setupTracks() {
