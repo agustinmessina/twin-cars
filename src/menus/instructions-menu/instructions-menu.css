@@ -1,0 +1,24 @@
+.menu-instructions {
+  display: grid;
+  font-size: 0.7rem;
+  grid-template-rows: 100px 1fr 100px;
+  grid-template-areas: 
+    "title"
+    "instructions"
+    "button";
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+}
+
+.instructions {
+  grid-area: instructions;
+  font-size: 0.85rem;
+  line-height: 1.2rem;
+  color: white;
+  padding: 0 15px;
+}
+
+.cancel-instruction-button {
+  grid-area: button;
+}
